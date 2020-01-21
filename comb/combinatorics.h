@@ -3,10 +3,9 @@
 #include <functional>
 
 
-
 template<typename ty, int N>
 struct CompileTimeFactorial {
-    static constexpr ty value = N * CompileTimeFactorial<ty, N-1>::value;
+    static constexpr ty value = N * CompileTimeFactorial<ty, N - 1>::value;
 
 };
 
@@ -36,5 +35,16 @@ struct NChooseK<ty, N, N> {
 };
 
 
-void iter_choices(std::function<void(std::vector<int>)> visit);
+void iter_combinations(int n, int r, const std::function<void(const std::vector<int>& indices)>& visit);
 
+
+template<typename ty>
+void iter_combinations(const std::vector<ty>& pool, int r, const std::function<void(const std::vector<int>& indices)>& visit)
+{
+    std::vector<ty> combination(r);
+    iter_combinations(pool.size(), [combination, pool](std::vector<int>& indices) {
+        for(int index=0; index<4; ++index) {
+            combination[index] = pool[indices[index]];
+        }
+    });
+}
