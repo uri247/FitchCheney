@@ -1,12 +1,14 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <functional>
+#include <cstdint>
 
+namespace cb {
 
 template<typename ty, int N>
 struct CompileTimeFactorial {
     static constexpr ty value = N * CompileTimeFactorial<ty, N - 1>::value;
-
 };
 
 template<typename ty>
@@ -14,37 +16,71 @@ struct CompileTimeFactorial<ty, 0> {
     static constexpr ty value = static_cast<ty>(1);
 };
 
-template<int N> using CompileTimeFactorial32 = CompileTimeFactorial<int32_t, N>;
-template<int N> using CompileTimeFactorial64 = CompileTimeFactorial<int64_t, N>;
+template<int N> using CompileTimeFactorial32 = CompileTimeFactorial<std::int32_t, N>;
+template<int N> using CompileTimeFactorial64 = CompileTimeFactorial<std::int64_t, N>;
 
 
-template<typename ty, int N, int K>
-struct NChooseK {
-    static_assert(N > K);
-    static constexpr ty value = NChooseK<ty, N-1, K>::value + NChooseK<ty, N-1, K-1>::value;
+
+template<typename ty, int N, int M>
+struct CompileTimeCombinations {
+    static constexpr ty value = CompileTimeCombinations<ty, N - 1, M - 1>::value + CompileTimeCombinations<ty, N - 1, M>::value;
 };
 
 template<typename ty, int N>
-struct NChooseK<ty, N, 0> {
-    static constexpr ty value = static_cast<ty>(1);
+struct CompileTimeCombinations<ty, N, 0> {
+    static constexpr ty value = 1;
+};
+
+template<typename ty, int M>
+struct CompileTimeCombinations<ty, M, M> {
+    static constexpr ty value = 1;
+};
+
+template<int N, int M> using CompileTimeCombinations32 = CompileTimeCombinations<std::int32_t, N, M>;
+template<int N, int M> using CompileTimeCombinations64 = CompileTimeCombinations<std::int64_t, N, M>;
+
+
+template<typename ty, int N, int M>
+struct CompileTimePermutations {
+    static constexpr ty value = N * CompileTimePermutations<ty, N - 1, M - 1>::value;
 };
 
 template<typename ty, int N>
-struct NChooseK<ty, N, N> {
-    static const ty value = static_cast<ty>(1);
+struct CompileTimePermutations<ty, N, 0> {
+    static constexpr ty value = 1;
 };
+
+template<int N, int M> using CompileTimePermutations32 = CompileTimePermutations<std::int32_t, N, M>;
+template<int N, int M> using CompileTimePermutations64 = CompileTimePermutations<std::int64_t, N, M>;
 
 
 void iter_combinations(int n, int r, const std::function<void(const std::vector<int>& indices)>& visit);
+void iter_permutations(int n, int r, const std::function<void(const std::vector<int>& indices)>& visit);
+
 
 
 template<typename ty>
-void iter_combinations(const std::vector<ty>& pool, int r, const std::function<void(const std::vector<int>& indices)>& visit)
+void stream_vector(std::ostream& os, typename std::vector<ty>::const_iterator begin, typename std::vector<ty>::const_iterator end)
 {
-    std::vector<ty> combination(r);
-    iter_combinations(pool.size(), [combination, pool](std::vector<int>& indices) {
-        for(int index=0; index<4; ++index) {
-            combination[index] = pool[indices[index]];
+    os << '[';
+    for (auto p = begin; p != end; ++p)
+    {
+        os << *p;
+        if (p + 1 != end) {
+            os << ", ";
         }
-    });
+    }
+    os << ']';
 }
+
+
+}
+
+
+
+template<typename ty>
+std::ostream& operator<<(std::ostream& os, const std::vector<ty>& vector) {
+    cb::stream_vector<ty>(os, vector.begin(), vector.end());
+    return os;
+}
+

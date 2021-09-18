@@ -4,4 +4,7 @@ project(FitchCheney)
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(comb)
-add_subdirectory(main)
+
+
+add_executable(fitch-cheney main.cpp)
+target_link_libraries(fitch-cheney comb)
