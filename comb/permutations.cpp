@@ -27,11 +27,10 @@ void iter_permutations_my(int n, int r, const std::function<void(const std::vect
         for (i = r - 1; i >= 0; --i) {
             cycles[i] -= 1;
             if (cycles[i] == 0) {
-                int tmp = indices[i];
-                for (int j = i; j + 1 < n; ++j) {
-                    indices[j] = indices[static_cast<size_t>(j) + 1];
-                }
-                indices[static_cast<size_t>(n) - 1] = tmp;
+                //int tmp = indices[i];
+                //std::copy(indices.begin() + i + 1, indices.end(), indices.begin() + i);
+                //indices[static_cast<size_t>(n) - 1] = tmp;
+                std::rotate(indices.begin() + i, indices.begin() + i + 1, indices.end());
                 cycles[i] = n - i;
             }
             else {

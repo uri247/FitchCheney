@@ -43,7 +43,7 @@ void test_combinations()
 
 void test_permutations()
 {
-    cb::iter_permutations(5, 2, [](const std::vector<int>& perm) {
+    cb::iter_permutations(5, 3, [](const std::vector<int>& perm) {
         std::cout << perm << std::endl;
     });
 
