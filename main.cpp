@@ -1,6 +1,9 @@
 #include <iostream>
 #include <vector>
-#include "comb/combinatorics.h"
+#include "combinatorics/combinatorics.h"
+
+
+
 
 
 
