@@ -3,8 +3,14 @@
 #include <vector>
 #include <functional>
 #include <cstdint>
+#include <array>
 
 namespace cb {
+
+// A function that accept a reference to a vector
+using VectorFunction = std::function<void(const std::vector<int>&)>;
+
+
 
 template<typename ty, int N>
 struct CompileTimeFactorial {
@@ -72,6 +78,10 @@ void stream_vector(std::ostream& os, typename std::vector<ty>::const_iterator be
     }
     os << ']';
 }
+
+std::int64_t factorial(int n);
+std::int64_t permutation_index(std::vector<int> perm);
+std::vector<int> index_permutation(int n, std::int64_t index);
 
 
 }
