@@ -1,6 +1,7 @@
 #include "combinatorics.h"
 #include <vector>
 #include <cstdint>
+#include <cassert>
 
 namespace cb {
 
@@ -39,6 +40,11 @@ std::int64_t permutation_index(std::vector<int> perm, int n)
 
 std::vector<int> index_permutation(int n, std::int64_t index)
 {
+#ifndef NDEBUG
+	assert(index >= 0);
+	assert(index < cb::factorial(n));
+#endif
+
 	std::vector<int> perm(n);
 	for (int i = 0; i < n; ++i) {
 		perm[i] = i;
