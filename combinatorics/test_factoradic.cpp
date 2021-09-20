@@ -2,6 +2,8 @@
 
 #include <cstdint>
 #include <vector>
+#include <iostream>
+#include <iomanip>
 
 
 void simple_round_trip()
@@ -45,9 +47,30 @@ void test_big_round_trip(int n)
 }
 
 
+void simple_sub_permutation()
+{
+    std::vector<int> p{ 1, 0, 3 };
+    std::int64_t index = cb::permutation_index(p, 5);
+    std::cout <<
+        "sample sub permutation:" << std::endl <<
+        "  original: " << p << std::endl <<
+        "  index: " << index << std::endl;
+}
+
+void print_sub_permutation(int n, int r)
+{
+    cb::iter_permutations(n, r, [n](const std::vector<int>& perm) {
+        std::vector<int> p{ perm };
+        std::int64_t index = cb::permutation_index(p, n);
+        std::cout << std::setw(5) << index << ": " << p << std::endl;
+        });
+}
+
 int main() {
     simple_round_trip();
     print_permutations(4);
     test_big_round_trip(8);
+    simple_sub_permutation();
+    print_sub_permutation(5, 3);
     return 0;
 }

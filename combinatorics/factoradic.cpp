@@ -15,13 +15,18 @@ std::int64_t factorial(int n)
 	}
 }
 
-std::int64_t permutation_index(std::vector<int> perm)
+
+
+std::int64_t permutation_index(std::vector<int> perm, int n)
 {
 	std::int64_t sum = 0;
 	std::int64_t num_digits = perm.size();
+	if (n == -1) {
+		n = num_digits;
+	}
 	for (std::int64_t i = 0; i < num_digits; ++i) {
 		std::int64_t digit = perm[i];
-		sum = sum * (num_digits - i) + digit;
+		sum = sum * (n - i) + digit;
 		for (std::int64_t j = i + 1; j < num_digits; ++j) {
 			if (perm[j] > digit) {
 				perm[j] -= 1;

@@ -80,7 +80,7 @@ void stream_vector(std::ostream& os, typename std::vector<ty>::const_iterator be
 }
 
 std::int64_t factorial(int n);
-std::int64_t permutation_index(std::vector<int> perm);
+std::int64_t permutation_index(std::vector<int> perm, int n = -1);
 std::vector<int> index_permutation(int n, std::int64_t index);
 
 
